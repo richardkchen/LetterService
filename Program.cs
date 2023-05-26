@@ -1,10 +1,5 @@
 ﻿using System.Linq;
 
-public interface ILetterService
-{
-  void CombineTwoLetters(string inputFile1, string inputFile2, string resultFile);
-}
-
 public struct Letter
 {
   public string StudentID { get; set; }
@@ -18,9 +13,8 @@ public struct Letter
   }
 }
 
-public class LetterService: ILetterService
+public class LetterService
 {
-
   string admissionInputDirectory = @"CombinedLetters/Input/Admission";
   string scholarshipInputDirectory = @"CombinedLetters/Input/Scholarship";
 
@@ -78,9 +72,8 @@ public class LetterService: ILetterService
     foreach(Letter letter in QueryAdmissionWithScholarship(letterService))
     {
       string resultFile = $@"{letterService.outputDirectory}/{letter.StudentID}.txt";
-      // TODO: implement CombineTwoLetters
-      // await CombineTwoLetters(letter.AdmissionLetter, letter.ScholarshipLetter, resultFile);
-      await Task.Run(() => Console.WriteLine($"Combine {letter.StudentID}'s letters"));
+      Console.WriteLine($"Combining Letters and Writing to {resultFile}.");
+      await CombineTwoLetters(letter.AdmissionLetter, letter.ScholarshipLetter, resultFile);
     }
   }
 
@@ -120,7 +113,20 @@ public class LetterService: ILetterService
     return Path.GetFileNameWithoutExtension(filePath).Split('-')[1];
   }
 
-  public void CombineTwoLetters(string inputFile1, string inputFile2, string resultFile)
+  // Combines Admission and Scholarship letters asynchronously, in case large number
+  // of scholarships awarded. Writes resulting stream to text file in Output path.
+  public static async Task CombineTwoLetters(string inputFile1, string inputFile2, string resultFile)
   {
+    using (FileStream outputStream = File.Create(resultFile))
+    {
+      using (FileStream admissionLetterStream = File.OpenRead(inputFile1))
+      {
+        await admissionLetterStream.CopyToAsync(outputStream);
+      }
+      using (FileStream scholarshipLetterStream = File.OpenRead(inputFile2))
+      {
+        await scholarshipLetterStream.CopyToAsync(outputStream);
+      }
+    }
   }
 }
