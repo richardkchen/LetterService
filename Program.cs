@@ -1,23 +1,9 @@
 ﻿using System.Linq;
 
-public struct Letter
-{
-  public string StudentID { get; set; }
-  public string AdmissionLetter { get; set; }
-  public string ScholarshipLetter { get; set; }
-  public Letter(string studentID, string admissionLetter, string scholarshipLetter)
-  {
-    StudentID = studentID;
-    AdmissionLetter = admissionLetter;
-    ScholarshipLetter = scholarshipLetter;
-  }
-}
-
 public class LetterService
 {
   string admissionInputDirectory = @"CombinedLetters/Input/Admission";
   string scholarshipInputDirectory = @"CombinedLetters/Input/Scholarship";
-
   string admissionArchiveDirectory = @"CombinedLetters/Archive/Admission";
   string scholarshipArchiveDirectory = @"CombinedLetters/Archive/Scholarship";
   string outputDirectory = @"CombinedLetters/Output";
@@ -38,7 +24,7 @@ public class LetterService
   // from CombinedLetters/Input/Admission/yyyyMMdd/admission-XXXXXXXX.txt
   // to CombinedLetters/Archive/Admission/yyyyMMdd/admission-XXXXXXXX.txt
   // Will overwrite if archived letter exists
-  public static async Task ArchiveFiles(string inputDirectory, string archiveDirectory)
+  static async Task ArchiveFiles(string inputDirectory, string archiveDirectory)
   {
     Console.WriteLine($"Archiving {inputDirectory} to {archiveDirectory}.");
     foreach (string datedFolder in Directory.EnumerateDirectories(inputDirectory))
@@ -69,7 +55,7 @@ public class LetterService
   }
 
   // Iterates over letters of matching StudentIDs to combine text files
-  public static async Task CombineLetters(LetterService letterService)
+  static async Task CombineLetters(LetterService letterService)
   {
     foreach(Letter letter in QueryAdmissionWithScholarship(letterService))
     {
@@ -81,7 +67,7 @@ public class LetterService
 
   // Query for letter filenames in Input Admission and Scholarhip with matching StudentIDs
   // Returns Iterable of type Letter
-  public static IEnumerable<Letter> QueryAdmissionWithScholarship(LetterService letterService)
+  static IEnumerable<Letter> QueryAdmissionWithScholarship(LetterService letterService)
   {
     IEnumerable<string> admissionLetters = new string[] { };
     IEnumerable<string> scholarshipLetters = new string[] { };
@@ -110,14 +96,14 @@ public class LetterService
     }
   }
 
-  public static string GetStudentIDFromFile(string filePath)
+  static string GetStudentIDFromFile(string filePath)
   {
     return Path.GetFileNameWithoutExtension(filePath).Split('-')[1];
   }
 
   // Combines Admission and Scholarship letters asynchronously, in case large number
   // of scholarships awarded. Writes resulting stream to text file in Output path.
-  public static async Task CombineTwoLetters(string inputFile1, string inputFile2, string resultFile)
+  static async Task CombineTwoLetters(string inputFile1, string inputFile2, string resultFile)
   {
     using (FileStream outputStream = File.Create(resultFile))
     {
@@ -133,7 +119,7 @@ public class LetterService
   }
 
   // Generates Report by iterating over QueryAdmissionWithScholarship() for StudentID
-  public static async Task GenerateReport(LetterService letterService)
+  static async Task GenerateReport(LetterService letterService)
   {
     DateTime now = DateTime.Now;
     string today = now.ToString("MMddyyyy");
@@ -153,4 +139,18 @@ public class LetterService
     }
 
   }
+
+  struct Letter
+  {
+    public string StudentID { get; set; }
+    public string AdmissionLetter { get; set; }
+    public string ScholarshipLetter { get; set; }
+    public Letter(string studentID, string admissionLetter, string scholarshipLetter)
+    {
+      StudentID = studentID;
+      AdmissionLetter = admissionLetter;
+      ScholarshipLetter = scholarshipLetter;
+    }
+  }
+
 }
