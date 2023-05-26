@@ -7,20 +7,23 @@ public class LetterService: ILetterService
 {
   public static async Task Main()
   {
-    await ArchiveAdmissionFiles();
+    string inputDirectory = @"CombinedLetters/Input";
+    string archiveDirectory = @"CombinedLetters/Archive";
+    await ArchiveFiles(inputDirectory, archiveDirectory, "Admission");
+    await ArchiveFiles(inputDirectory, archiveDirectory, "Scholarship");
   }
 
-  // Asynchronously archives Admission Letters based on dated folder name
+  // Archives Letters based on dated folder name
   // from CombinedLetters/Input/Admission/yyyyMMdd/admission-XXXXXXXX.txt
   // to CombinedLetters/Archive/Admission/yyyyMMdd/admission-XXXXXXXX.txt
-  public static async Task ArchiveAdmissionFiles()
+  public static async Task ArchiveFiles(string inputDirectory, string archiveDirectory, string fixedFolderName)
   {
-    Console.WriteLine("Archiving Admission Letters to Archive directory.");
-    string sourceDirectory = @"CombinedLetters/Input/Admission";
+    Console.WriteLine($"Archiving {fixedFolderName} Letters to Archive directory.");
+    string sourceDirectory = $@"{inputDirectory}/{fixedFolderName}";
     foreach (string datedFolder in Directory.EnumerateDirectories(sourceDirectory))
     {
       string datedFolderName = new DirectoryInfo(datedFolder).Name;
-      string destinationDirectory = Path.Combine(@"CombinedLetters/Archive/Admission", datedFolderName);
+      string destinationDirectory = Path.Combine(archiveDirectory, fixedFolderName, datedFolderName);
 
       if (!Directory.Exists(destinationDirectory)) {
         Console.WriteLine($@"Creating {destinationDirectory}");
