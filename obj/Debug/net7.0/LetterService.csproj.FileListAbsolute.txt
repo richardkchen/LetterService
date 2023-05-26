@@ -1,0 +1,15 @@
+/Users/richardchen/code/csharp/LetterService/obj/Debug/net7.0/LetterService.csproj.AssemblyReference.cache
+/Users/richardchen/code/csharp/LetterService/obj/Debug/net7.0/LetterService.GeneratedMSBuildEditorConfig.editorconfig
+/Users/richardchen/code/csharp/LetterService/obj/Debug/net7.0/LetterService.AssemblyInfoInputs.cache
+/Users/richardchen/code/csharp/LetterService/obj/Debug/net7.0/LetterService.AssemblyInfo.cs
+/Users/richardchen/code/csharp/LetterService/obj/Debug/net7.0/LetterService.csproj.CoreCompileInputs.cache
+/Users/richardchen/code/csharp/LetterService/bin/Debug/net7.0/LetterService
+/Users/richardchen/code/csharp/LetterService/bin/Debug/net7.0/LetterService.deps.json
+/Users/richardchen/code/csharp/LetterService/bin/Debug/net7.0/LetterService.runtimeconfig.json
+/Users/richardchen/code/csharp/LetterService/bin/Debug/net7.0/LetterService.dll
+/Users/richardchen/code/csharp/LetterService/bin/Debug/net7.0/LetterService.pdb
+/Users/richardchen/code/csharp/LetterService/obj/Debug/net7.0/LetterService.dll
+/Users/richardchen/code/csharp/LetterService/obj/Debug/net7.0/refint/LetterService.dll
+/Users/richardchen/code/csharp/LetterService/obj/Debug/net7.0/LetterService.pdb
+/Users/richardchen/code/csharp/LetterService/obj/Debug/net7.0/LetterService.genruntimeconfig.cache
+/Users/richardchen/code/csharp/LetterService/obj/Debug/net7.0/ref/LetterService.dll
