@@ -30,6 +30,8 @@ public class LetterService
     await ArchiveFiles(letterService.scholarshipInputDirectory, letterService.scholarshipArchiveDirectory);
 
     await CombineLetters(letterService);
+
+    await GenerateReport(letterService);
   }
 
   // Archives letters based on dated folder name
@@ -66,7 +68,7 @@ public class LetterService
     }
   }
 
-  // Iterate over letters of matching StudentIDs to combine text files
+  // Iterates over letters of matching StudentIDs to combine text files
   public static async Task CombineLetters(LetterService letterService)
   {
     foreach(Letter letter in QueryAdmissionWithScholarship(letterService))
@@ -128,5 +130,27 @@ public class LetterService
         await scholarshipLetterStream.CopyToAsync(outputStream);
       }
     }
+  }
+
+  // Generates Report by iterating over QueryAdmissionWithScholarship() for StudentID
+  public static async Task GenerateReport(LetterService letterService)
+  {
+    DateTime now = DateTime.Now;
+    string today = now.ToString("MMddyyyy");
+    string todayFormatted = now.ToString("MM/dd/yyyy");
+    string divider = new string('-', 32);
+    int combinedLettersCount = QueryAdmissionWithScholarship(letterService).Count();
+
+    using (StreamWriter reportWriter = File.CreateText($@"{letterService.outputDirectory}/Report-{today}.txt"))
+    {
+      await reportWriter.WriteLineAsync($"{todayFormatted} Report");
+      await reportWriter.WriteLineAsync(divider);
+      await reportWriter.WriteLineAsync($"\nNumber of Combined Letters: {combinedLettersCount}");
+      foreach (Letter letter in QueryAdmissionWithScholarship(letterService))
+      {
+        await reportWriter.WriteLineAsync($"\t{letter.StudentID}");
+      }
+    }
+
   }
 }
